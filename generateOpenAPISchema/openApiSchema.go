@@ -40,6 +40,11 @@ func main() {
 		Paths: openapi3.Paths{},
 	}
 
+	// Make a Schema Component
+	spec.Components = &openapi3.Components{
+		Schemas: make(map[string]*openapi3.SchemaRef),
+	}
+
 	sucRes := "Successful response"
 
 	// Iterate over the list of countries
@@ -91,6 +96,58 @@ func main() {
 				"200": &openapi3.ResponseRef{
 					Value: &openapi3.Response{
 						Description: &sucRes,
+						Content: openapi3.Content{
+							"application/json": &openapi3.MediaType{
+								Schema: &openapi3.SchemaRef{
+									Value: &openapi3.Schema{
+										Type:        "array",
+										Description: "List of universities",
+										Items: &openapi3.SchemaRef{
+											Ref: "#/components/schemas/University",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}
+
+		// University schema component
+		spec.Components.Schemas["University"] = &openapi3.SchemaRef{
+			Value: &openapi3.Schema{
+				Type: "object",
+				Properties: map[string]*openapi3.SchemaRef{
+					"name": {
+						Value: &openapi3.Schema{
+							Type:        "string",
+							Description: "Name of the university",
+						},
+					},
+					"country": {
+						Value: &openapi3.Schema{
+							Type:        "string",
+							Description: "Country of the university",
+						},
+					},
+					"web_page": {
+						Value: &openapi3.Schema{
+							Type:        "string",
+							Description: "Web page of the university",
+						},
+					},
+					"alpha_two_code": {
+						Value: &openapi3.Schema{
+							Type:        "string",
+							Description: "Alpha-2 code of the country where the university is located",
+						},
+					},
+					"state-province": {
+						Value: &openapi3.Schema{
+							Type:        "string",
+							Description: "State or province where the university is located",
+						},
 					},
 				},
 			},

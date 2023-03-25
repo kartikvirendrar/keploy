@@ -1,4 +1,24 @@
 openapi: 3.0.0
+components:
+  schemas:
+    University:
+      type: object
+      properties:
+        alpha_two_code:
+          type: string
+          description: Alpha-2 code of the country where the university is located
+        country:
+          type: string
+          description: Country of the university
+        name:
+          type: string
+          description: Name of the university
+        state-province:
+          type: string
+          description: State or province where the university is located
+        web_page:
+          type: string
+          description: Web page of the university
 info:
   title: My API
   version: 1.0.0
@@ -9,9 +29,23 @@ paths:
       responses:
         "200":
           description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                description: List of universities
+                items:
+                  $ref: '#/components/schemas/University'
   /United+States:
     get:
       description: Get universities in United+States
       responses:
         "200":
           description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                description: List of universities
+                items:
+                  $ref: '#/components/schemas/University'
